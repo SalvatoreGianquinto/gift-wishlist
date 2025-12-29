@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
+import Link from "next/link"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,6 +24,25 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning
       >
+        <nav className="flex items-center justify-between px-6 py-4 bg-white border-b border-gray-100 shadow-sm">
+          <div className="text-xl font-bold bg-linear-to-r from-blue-600 to-pink-500 bg-clip-text text-transparent">
+            GIFT WISHLIST
+          </div>
+          <div className="flex gap-6">
+            <Link
+              href="/my-list"
+              className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
+            >
+              I miei desideri
+            </Link>
+            <Link
+              href="/partner-list"
+              className="text-sm font-medium text-gray-600 hover:text-pink-500 transition-colors"
+            >
+              Regali per lei
+            </Link>
+          </div>
+        </nav>
         {children}
       </body>
     </html>
