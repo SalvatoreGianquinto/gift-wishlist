@@ -25,7 +25,17 @@ export default function RootLayout({ children }) {
         suppressHydrationWarning
       >
         <div className="fixed inset-0 pointer-events-none z-60 border-15 border-white"></div>
-        <div className="fixed inset-0 z-0 p-5 bg-black"></div>
+        <div className="fixed inset-0 z-0 p-3.75 overflow-hidden bg-slate-50">
+          <div className="relative w-full h-full rounded-xl overflow-hidden bg-[#f0f9ff]">
+            <div className="absolute -top-[10%] -right-[10%] w-[70%] h-[70%] rounded-full bg-pink-500/40 blur-[120px] animate-pulse"></div>
+
+            <div className="absolute -bottom-[20%] -left-[10%] w-[80%] h-[80%] rounded-full bg-blue-500/30 blur-[100px]"></div>
+
+            <div className="absolute top-[20%] left-[30%] w-[40%] h-[40%] rounded-full bg-yellow-300/20 blur-[80px]"></div>
+
+            <div className="absolute inset-0 bg-white/10 backdrop-blur-[20px]"></div>
+          </div>
+        </div>
         <Navbar />
         <main className="relative z-10 min-h-screen w-full flex items-center justify-center px-10">
           <div className="w-full max-w-4xl">{children}</div>
