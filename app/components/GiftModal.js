@@ -45,14 +45,14 @@ export default function GiftModal({ isOpen, onClose, type }) {
   }
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-start md:items-center justify-center p-4 overflow-y-auto pt-24 md:pt-0">
+    <div className="fixed inset-0 z-100 flex items-start md:items-center justify-center p-4 overflow-y-auto pt-24 md:pt-0">
       <div
         className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm"
         onClick={onClose}
       ></div>
 
       <div
-        className={`relative w-[calc(100vw-40px)] md:max-w-md bg-white rounded-[2rem] p-6 md:p-8 shadow-2xl transition-all font-mono border-4 mb-10 md:mb-0 ${
+        className={`relative w-[calc(100vw-40px)] md:max-w-md bg-white rounded-4xl p-6 md:p-8 shadow-2xl transition-all font-mono border-4 mb-10 md:mb-0 ${
           isHim ? "border-blue-500" : "border-pink-500"
         }`}
       >
