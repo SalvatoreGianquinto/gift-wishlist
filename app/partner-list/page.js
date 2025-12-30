@@ -40,7 +40,7 @@ export default function HerListPage() {
             I suoi desideri
           </p>
         </div>
-        <h1 className="font-bold text-5xl md:text-6xl bg-gradient-to-r from-pink-500 to-rose-600 bg-clip-text text-transparent font-mono tracking-tighter uppercase">
+        <h1 className="font-bold text-5xl md:text-6xl bg-linear-to-r from-pink-500 to-rose-600 bg-clip-text text-transparent font-mono tracking-tighter uppercase">
           Lista per lei
         </h1>
         <p className="text-slate-500 font-mono text-sm mt-4 max-w-md leading-relaxed">
@@ -51,7 +51,7 @@ export default function HerListPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <button
           onClick={() => setIsModalOpen(true)}
-          className="group relative border-2 border-dashed border-pink-200 hover:border-pink-500 transition-all rounded-[2.5rem] flex flex-col items-center justify-center p-8 min-h-[350px] bg-white/5 hover:bg-white/20"
+          className="group relative border-2 border-dashed border-pink-200 hover:border-pink-500 transition-all rounded-[2.5rem] flex flex-col items-center justify-center p-8 min-h-87.5 bg-white/5 hover:bg-white/20"
         >
           <div className="w-16 h-16 rounded-full bg-pink-500 text-white flex items-center justify-center text-3xl shadow-lg shadow-pink-200 group-hover:scale-110 transition-transform">
             +

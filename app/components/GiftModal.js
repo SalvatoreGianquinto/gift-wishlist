@@ -16,56 +16,57 @@ export default function GiftModal({ isOpen, onClose, type }) {
     e.preventDefault()
 
     const giftData = {
-      title: title, // Corretto: usiamo la variabile dello stato 'title'
+      title: title,
       price: parseFloat(price) || 0,
       store: store,
       link: link,
-      image_url: imageUrl, // Corretto: usiamo 'imageUrl'
-      type: type, // Usiamo 'type' che ricevi come prop (him o her)
+      image_url: imageUrl,
+      type: type,
     }
 
     const { data, error } = await supabase
       .from("gifts")
       .insert([giftData])
-      .select() // Ti restituisce il dato appena creato
+      .select()
 
     if (error) {
       console.error("Errore durante l'invio:", error.message)
       alert("Errore: " + error.message)
     } else {
       console.log("Regalo salvato!", data)
-      // Reset dei campi
+
       setTitle("")
       setPrice("")
       setStore("")
       setLink("")
       setImageUrl("")
-      onClose() // Chiude il modal dopo il successo
+      onClose()
     }
   }
 
   return (
-    <div className="fixed inset-0 z-100 flex items-center justify-center p-4 md:p-6">
+    <div className="fixed inset-0 z-[100] flex items-start md:items-center justify-center p-4 overflow-y-auto pt-24 md:pt-0">
       <div
-        className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+        className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm"
         onClick={onClose}
       ></div>
+
       <div
-        className={`relative w-full max-w-md bg-white rounded-[2.5rem] p-8 shadow-2xl transition-all font-mono border-4 ${
+        className={`relative w-[calc(100vw-40px)] md:max-w-md bg-white rounded-[2rem] p-6 md:p-8 shadow-2xl transition-all font-mono border-4 mb-10 md:mb-0 ${
           isHim ? "border-blue-500" : "border-pink-500"
         }`}
       >
         <h2
-          className={`text-2xl font-black uppercase tracking-tighter mb-6 ${
+          className={`text-xl md:text-2xl font-black uppercase tracking-tighter mb-4 ${
             isHim ? "text-blue-600" : "text-pink-600"
           }`}
         >
           Nuovo Desiderio
         </h2>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4">
           <div>
-            <label className="text-[10px] uppercase tracking-widest font-bold text-slate-400 ml-2">
+            <label className="text-[9px] uppercase tracking-widest font-bold text-slate-400 ml-2">
               Nome Oggetto
             </label>
             <input
@@ -73,7 +74,7 @@ export default function GiftModal({ isOpen, onClose, type }) {
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className={`w-full bg-slate-100 border-b-2 rounded-t-2xl p-4 outline-none transition-all text-black
+              className={`w-full bg-slate-100 border-b-2 rounded-t-xl p-3 md:p-4 outline-none transition-all text-sm text-black
                 ${
                   isHim
                     ? "border-blue-200 focus:border-blue-500 focus:bg-blue-50/50"
@@ -83,16 +84,16 @@ export default function GiftModal({ isOpen, onClose, type }) {
             />
           </div>
 
-          <div className="flex gap-4">
+          <div className="flex gap-3">
             <div className="flex-1">
-              <label className="text-[10px] uppercase tracking-widest font-bold text-slate-400 ml-2">
+              <label className="text-[9px] uppercase tracking-widest font-bold text-slate-400 ml-2">
                 Prezzo (€)
               </label>
               <input
                 type="number"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
-                className={`w-full bg-slate-100 border-b-2 rounded-t-2xl p-4 outline-none transition-all text-black
+                className={`w-full bg-slate-100 border-b-2 rounded-t-xl p-3 md:p-4 outline-none transition-all text-sm text-black
                 ${
                   isHim
                     ? "border-blue-200 focus:border-blue-500 focus:bg-blue-50/50"
@@ -102,14 +103,14 @@ export default function GiftModal({ isOpen, onClose, type }) {
               />
             </div>
             <div className="flex-1">
-              <label className="text-[10px] uppercase tracking-widest font-bold text-slate-400 ml-2">
+              <label className="text-[9px] uppercase tracking-widest font-bold text-slate-400 ml-2">
                 Store
               </label>
               <input
                 type="text"
                 value={store}
                 onChange={(e) => setStore(e.target.value)}
-                className={`w-full bg-slate-100 border-b-2 rounded-t-2xl p-4 outline-none transition-all text-black
+                className={`w-full bg-slate-100 border-b-2 rounded-t-xl p-3 md:p-4 outline-none transition-all text-sm text-black
                 ${
                   isHim
                     ? "border-blue-200 focus:border-blue-500 focus:bg-blue-50/50"
@@ -121,14 +122,14 @@ export default function GiftModal({ isOpen, onClose, type }) {
           </div>
 
           <div>
-            <label className="text-[10px] uppercase tracking-widest font-bold text-slate-400 ml-2">
+            <label className="text-[9px] uppercase tracking-widest font-bold text-slate-400 ml-2">
               Link Prodotto
             </label>
             <input
               type="url"
               value={link}
               onChange={(e) => setLink(e.target.value)}
-              className={`w-full bg-slate-100 border-b-2 rounded-t-2xl p-4 outline-none transition-all text-black
+              className={`w-full bg-slate-100 border-b-2 rounded-t-xl p-3 md:p-4 outline-none transition-all text-sm text-black
                 ${
                   isHim
                     ? "border-blue-200 focus:border-blue-500 focus:bg-blue-50/50"
@@ -139,26 +140,26 @@ export default function GiftModal({ isOpen, onClose, type }) {
           </div>
 
           <div>
-            <label className="text-[10px] uppercase tracking-widest font-bold text-slate-400 ml-2">
+            <label className="text-[9px] uppercase tracking-widest font-bold text-slate-400 ml-2">
               URL Immagine
             </label>
             <input
               type="url"
               value={imageUrl}
               onChange={(e) => setImageUrl(e.target.value)}
-              className={`w-full bg-slate-100 border-b-2 rounded-t-2xl p-4 outline-none transition-all text-black
+              className={`w-full bg-slate-100 border-b-2 rounded-t-xl p-3 md:p-4 outline-none transition-all text-sm text-black
                 ${
                   isHim
                     ? "border-blue-200 focus:border-blue-500 focus:bg-blue-50/50"
                     : "border-pink-200 focus:border-pink-500 focus:bg-pink-50/50"
                 }`}
-              placeholder="Incolla link immagine prodotto"
+              placeholder="Incolla link immagine"
             />
           </div>
 
           <button
             type="submit"
-            className={`w-full py-4 rounded-2xl font-black uppercase tracking-widest text-white shadow-lg transition-transform active:scale-95 mt-4 ${
+            className={`w-full py-3 md:py-4 rounded-xl font-black uppercase tracking-widest text-white text-xs md:text-sm shadow-lg transition-transform active:scale-95 mt-2 ${
               isHim
                 ? "bg-blue-600 shadow-blue-200"
                 : "bg-pink-600 shadow-pink-200"
@@ -167,9 +168,10 @@ export default function GiftModal({ isOpen, onClose, type }) {
             Aggiungi alla lista
           </button>
         </form>
+
         <button
           onClick={onClose}
-          className="absolute top-6 right-6 text-slate-300 hover:text-slate-600 transition-colors"
+          className="absolute top-5 right-5 text-slate-300 hover:text-slate-600 transition-colors"
         >
           ✕
         </button>
