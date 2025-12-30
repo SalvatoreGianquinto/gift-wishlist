@@ -9,6 +9,7 @@ export default function MyListPage() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [gifts, setGifts] = useState([])
   const [loading, setLoading] = useState(true)
+  const [deletingId, setDeletingId] = useState(null)
 
   const fetchGifts = async () => {
     try {
@@ -28,6 +29,17 @@ export default function MyListPage() {
     }
   }
 
+  const deleteGift = async (id) => {
+    try {
+      const { error } = await supabase.from("gifts").delete().eq("id", id)
+      if (error) throw error
+      setGifts(gifts.filter((gift) => gift.id !== id))
+      setDeletingId(null)
+    } catch (error) {
+      console.error(error.message)
+    }
+  }
+
   useEffect(() => {
     fetchGifts()
   }, [])
@@ -43,9 +55,6 @@ export default function MyListPage() {
         <h1 className="font-bold text-5xl md:text-6xl bg-linear-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent font-mono tracking-tighter uppercase">
           Lista per lui
         </h1>
-        <p className="text-slate-500 font-mono text-sm mt-4 max-w-md leading-relaxed">
-          Una selezione curata di desideri, gadget e ispirazioni.
-        </p>
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -64,8 +73,47 @@ export default function MyListPage() {
         {gifts.map((gift) => (
           <div
             key={gift.id}
-            className="group bg-white/40 backdrop-blur-md border border-white/40 rounded-[2.5rem] p-4 shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1"
+            className="group relative bg-white/40 backdrop-blur-md border border-white/40 rounded-[2.5rem] p-4 shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1"
           >
+            {/* UI di Cancellazione Integrata */}
+            <div className="absolute top-6 left-6 z-20">
+              {deletingId === gift.id ? (
+                <div className="flex gap-2 animate-in fade-in zoom-in duration-300">
+                  <button
+                    onClick={() => deleteGift(gift.id)}
+                    className="px-3 py-1.5 bg-red-500 text-white text-[9px] font-black uppercase rounded-full shadow-lg hover:bg-red-600 transition-all active:scale-95"
+                  >
+                    Elimina
+                  </button>
+                  <button
+                    onClick={() => setDeletingId(null)}
+                    className="px-3 py-1.5 bg-slate-800 text-white text-[9px] font-black uppercase rounded-full shadow-lg hover:bg-slate-900 transition-all active:scale-95"
+                  >
+                    No
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => setDeletingId(gift.id)}
+                  className="w-9 h-9 bg-white/90 backdrop-blur-sm text-slate-400 hover:text-red-500 rounded-full flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110"
+                >
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                    />
+                  </svg>
+                </button>
+              )}
+            </div>
+
             <div className="relative aspect-square w-full overflow-hidden rounded-[1.8rem] bg-slate-100 mb-4">
               <img
                 src={gift.image_url}
@@ -78,12 +126,10 @@ export default function MyListPage() {
             </div>
 
             <div className="px-2 font-mono">
-              <div className="flex justify-between items-start mb-1">
-                <p className="text-[10px] uppercase tracking-widest text-blue-600 font-bold">
-                  {gift.store}
-                </p>
-              </div>
-              <h3 className="text-lg font-bold text-slate-800 uppercase tracking-tighter leading-tight h-12 line-clamp-2">
+              <p className="text-[10px] uppercase tracking-widest text-blue-600 font-bold mb-1">
+                {gift.store}
+              </p>
+              <h3 className="text-lg font-bold text-slate-800 uppercase tracking-tighter leading-tight h-12 line-clamp-2 mb-4">
                 {gift.title}
               </h3>
 
@@ -91,22 +137,9 @@ export default function MyListPage() {
                 href={gift.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-4 w-full flex items-center justify-center gap-2 py-3 bg-white border border-slate-200 text-slate-800 rounded-2xl font-mono text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-slate-900 hover:text-white hover:border-slate-900 transition-all shadow-sm"
+                className="w-full flex items-center justify-center gap-2 py-3 bg-white border border-slate-200 text-slate-800 rounded-2xl font-mono text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-slate-900 hover:text-white hover:border-slate-900 transition-all shadow-sm"
               >
                 Vedi Prodotto
-                <svg
-                  className="w-3 h-3"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M14 5l7 7m0 0l-7 7m7-7H3"
-                  />
-                </svg>
               </a>
             </div>
           </div>
