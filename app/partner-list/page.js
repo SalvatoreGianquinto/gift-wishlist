@@ -184,7 +184,7 @@ export default function HerListPage() {
           setGiftToEdit(null)
           fetchGifts()
         }}
-        type="him"
+        type="her"
         initialData={giftToEdit}
       />
     </main>
