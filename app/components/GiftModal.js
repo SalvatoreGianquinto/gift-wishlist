@@ -1,16 +1,34 @@
 "use client"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { supabase } from "@/lib/supabase"
 
-export default function GiftModal({ isOpen, onClose, type }) {
+export default function GiftModal({ isOpen, onClose, type, initialData }) {
   const [title, setTitle] = useState("")
   const [price, setPrice] = useState("")
   const [store, setStore] = useState("")
   const [link, setLink] = useState("")
   const [imageUrl, setImageUrl] = useState("")
 
-  if (!isOpen) return null
   const isHim = type === "him"
+  const isEditing = !!initialData
+
+  useEffect(() => {
+    if (initialData) {
+      setTitle(initialData.title || "")
+      setPrice(initialData.price || "")
+      setStore(initialData.store || "")
+      setLink(initialData.link || "")
+      setImageUrl(initialData.image_url || "")
+    } else {
+      setTitle("")
+      setPrice("")
+      setStore("")
+      setLink("")
+      setImageUrl("")
+    }
+  }, [initialData, isOpen])
+
+  if (!isOpen) return null
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -24,23 +42,22 @@ export default function GiftModal({ isOpen, onClose, type }) {
       type: type,
     }
 
-    const { data, error } = await supabase
-      .from("gifts")
-      .insert([giftData])
-      .select()
+    try {
+      if (isEditing) {
+        const { error } = await supabase
+          .from("gifts")
+          .update(giftData)
+          .eq("id", initialData.id)
+        if (error) throw error
+      } else {
+        const { error } = await supabase.from("gifts").insert([giftData])
+        if (error) throw error
+      }
 
-    if (error) {
-      console.error("Errore durante l'invio:", error.message)
-      alert("Errore: " + error.message)
-    } else {
-      console.log("Regalo salvato!", data)
-
-      setTitle("")
-      setPrice("")
-      setStore("")
-      setLink("")
-      setImageUrl("")
       onClose()
+    } catch (error) {
+      console.error("Errore:", error.message)
+      alert("Errore: " + error.message)
     }
   }
 
@@ -61,7 +78,7 @@ export default function GiftModal({ isOpen, onClose, type }) {
             isHim ? "text-blue-600" : "text-pink-600"
           }`}
         >
-          Nuovo Desiderio
+          {isEditing ? "Modifica Desiderio" : "Nuovo Desiderio"}
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4">
@@ -165,7 +182,7 @@ export default function GiftModal({ isOpen, onClose, type }) {
                 : "bg-pink-600 shadow-pink-200"
             }`}
           >
-            Aggiungi alla lista
+            {isEditing ? "Salva Modifiche" : "Aggiungi alla lista"}
           </button>
         </form>
 
